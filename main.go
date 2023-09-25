@@ -69,6 +69,7 @@ func main() {
 		return
 	case <-time.After(1 * time.Second):
 		fmt.Println("Erro de Timeout. As duas API demoraram para responder.")
+		return
 	}
 }
 
@@ -90,21 +91,18 @@ func getViaCep(url string, ch chan<- string) {
 	body, err := fetchAPI(url)
 	if err != nil {
 		ch <- err.Error()
-
 		return
 	}
 
 	var viaCep ViaCep
 	if err := json.Unmarshal(body, &viaCep); err != nil {
 		ch <- fmt.Sprintf("Erro ao processar JSON da API %s", url)
-
 		return
 	}
 
 	jsonFormated, err := json.MarshalIndent(viaCep, "", "    ")
 	if err != nil {
 		ch <- fmt.Sprintf("Erro ao formatar o JSON da API %s", url)
-
 		return
 	}
 
@@ -118,21 +116,18 @@ func getApiCep(url string, ch chan<- string) {
 	body, err := fetchAPI(url)
 	if err != nil {
 		ch <- err.Error()
-
 		return
 	}
 
 	var apiCep ApiCep
 	if err := json.Unmarshal(body, &apiCep); err != nil {
 		ch <- fmt.Sprintf("Erro ao processar JSON da API %s", url)
-
 		return
 	}
 
 	jsonFormated, err := json.MarshalIndent(apiCep, "", "    ")
 	if err != nil {
 		ch <- fmt.Sprintf("Erro ao formatar o JSON da API %s", url)
-
 		return
 	}
 
